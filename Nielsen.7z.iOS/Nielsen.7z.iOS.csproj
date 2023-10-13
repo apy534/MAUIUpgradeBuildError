@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+     <TargetFrameworks>net8.0-ios</TargetFrameworks>
+     <UseMaui>true</UseMaui>
+     <ImplicitUsings>enable</ImplicitUsings>
+	 <ProductVersion>0.5.0</ProductVersion>
+     <SchemaVersion>2.0</SchemaVersion>
+	 <ProjectTypeGuids>{8FFB629D-F513-41CE-95D2-7ECE97B6EEEC};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+     <ProjectGuid>{176FC04C-89F7-4A05-90BE-56D57E5AE1FC}</ProjectGuid>
+     <TemplateGuid>{b6f3ff35-79b2-4f25-a2fc-60a7cf61013b}</TemplateGuid>
+	 <OutputType>Library</OutputType>
+	 <RootNamespace>Nielsen.SevenZ</RootNamespace>
+     <AssemblyName>Nielsen.7z.iOS</AssemblyName>
+     <Authors>Nielsen</Authors>
+     <Description>7z ios port</Description>
+     <Configurations>Debug;Release;Debug_Nuget</Configurations>
+     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+     <CreatePackage>false</CreatePackage>
+     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+     <ProvisioningType>automatic</ProvisioningType>
+     <IsBindingProject>true</IsBindingProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <NativeReference Include="lib7za.a">
+      <Kind>Static</Kind>
+      <SmartLink>False</SmartLink>
+      <IsCxx>True</IsCxx>
+      <ForceLoad>True</ForceLoad>
+    </NativeReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SevenZDefines.cs" />
+    <Compile Include="SevenZImpl.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <BuildDependsOn>
+       BuildNativeLibs;$(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CleanDependsOn>
+       CleanNativeLibs;$(CleanDependsOn)
+    </CleanDependsOn>
+  </PropertyGroup>
+  <Target Name="BuildNativeLibs">
+    <Exec Condition="'$(Platform)' == 'AnyCPU'" Command="make CreateUniversalLibrary" WorkingDirectory="Native" />
+    <Exec Condition="'$(Platform)' == 'iPhone'" Command="make CreateIphoneLibrary" WorkingDirectory="Native" />
+    <Exec Condition="'$(Platform)' == 'iPhoneSimulator'" Command="make CreateIphoneSimulatorLibrary" WorkingDirectory="Native" />
+  </Target>
+  <Target Name="CleanNativeLibs">
+    <Exec Command="make clean" WorkingDirectory="Native" ContinueOnError="true" />
+  </Target>
+</Project>
