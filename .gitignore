@@ -1,0 +1,6 @@
+*.xcframework
+build
+bin
+obj
+*.binlog
+

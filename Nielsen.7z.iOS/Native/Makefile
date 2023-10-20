@@ -16,7 +16,8 @@ lib$(TARGET)-arm64.a:
 
 CreateUniversalLibrary: lib$(TARGET)-i386.a lib$(TARGET)-arm64.a
 	-mkdir -p $(TARGET_DIR_ROOT)
-	xcrun -sdk iphoneos lipo -create -output $(TARGET_DIR_ROOT)/lib$(TARGET).a $^
+	rm -rf $(TARGET_DIR_ROOT)/lib$(TARGET).xcframework
+	xcrun xcodebuild -create-xcframework $(foreach lib,$^,-library $(lib)) -output $(TARGET_DIR_ROOT)/lib$(TARGET).xcframework
 	-rm -rf lib$(TARGET)-arm64.a lib$(TARGET)-i386.a
 
 CreateIphoneSimulatorLibrary: lib$(TARGET)-i386.a
