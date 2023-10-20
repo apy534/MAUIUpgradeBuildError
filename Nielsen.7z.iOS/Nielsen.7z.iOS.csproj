@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
      <TargetFrameworks>net8.0-ios</TargetFrameworks>
-     <UseMaui>true</UseMaui>
      <ImplicitUsings>enable</ImplicitUsings>
 	 <ProductVersion>0.5.0</ProductVersion>
      <SchemaVersion>2.0</SchemaVersion>
