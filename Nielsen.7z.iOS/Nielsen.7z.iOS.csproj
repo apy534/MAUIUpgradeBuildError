@@ -46,22 +46,12 @@
   <ItemGroup>
     <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <BuildDependsOn>
-       BuildNativeLibs;$(BuildDependsOn)
-    </BuildDependsOn>
-  </PropertyGroup>
-  <PropertyGroup>
-    <CleanDependsOn>
-       CleanNativeLibs;$(CleanDependsOn)
-    </CleanDependsOn>
-  </PropertyGroup>
-  <Target Name="BuildNativeLibs">
+  <Target Name="BuildNativeLibs" BeforeTargets="BeforeBuild">
     <Exec Condition="'$(Platform)' == 'AnyCPU'" Command="make CreateUniversalLibrary" WorkingDirectory="Native" />
     <Exec Condition="'$(Platform)' == 'iPhone'" Command="make CreateIphoneLibrary" WorkingDirectory="Native" />
     <Exec Condition="'$(Platform)' == 'iPhoneSimulator'" Command="make CreateIphoneSimulatorLibrary" WorkingDirectory="Native" />
   </Target>
-  <Target Name="CleanNativeLibs">
+  <Target Name="CleanNativeLibs" BeforeTargets="BeforeClean">
     <Exec Command="make clean" WorkingDirectory="Native" ContinueOnError="true" />
   </Target>
 </Project>
